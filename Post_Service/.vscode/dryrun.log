@@ -1,0 +1,5 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/mahmud/Project/Post_Service'
+CGO_ENABLED=0 GOOS=linux go build -mod=vendor -a -installsuffix cgo -o /home/mahmud/Project/Post_Service/bin/ /main.go
+make: Leaving directory '/home/mahmud/Project/Post_Service'
+ 

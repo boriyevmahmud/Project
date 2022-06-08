@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package user;
+
+service PostService {
+    rpc Create(Post) returns (Post);
+    rpc GetById(GetByUserIdRequest) returns (Post);
+    rpc GetAllUserPosts(GetUserPostsrequest) returns (GetUserPosts);
+    rpc DeleteByIdPost(DeleteByIdPostreq) returns(Empty);
+    rpc UpdateByIdPost(UpdateByIdPostreq) returns(Empty);
+}
+
+message GetUserPosts {
+    repeated Post posts = 1;
+}
+
+message Empty {
+}
+
+message UpdateByIdPostreq {
+    string post_id=1;
+    repeated Post post=2;
+}
+
+message DeleteByIdPostreq{
+    string post_id=1;
+}
+
+message GetUserPostsrequest {
+    string user_id = 1;
+}
+
+message GetByUserIdRequest {
+    string user_id = 1;
+}
+
+message Post {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    string user_id = 4;
+    repeated Media medias = 5;
+}
+
+message Media {
+    string id = 1;
+    string type = 2;
+    string link = 3;
+}
