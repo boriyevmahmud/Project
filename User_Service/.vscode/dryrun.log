@@ -1,5 +1,6 @@
 make --dry-run --always-make --keep-going --print-directory
-make: Entering directory '/home/mahmud/Project/User_Service'
-CGO_ENABLED=0 GOOS=linux go build -mod=vendor -a -installsuffix cgo -o /home/mahmud/Project/User_Service/bin/ /main.go
-make: Leaving directory '/home/mahmud/Project/User_Service'
+make: Entering directory '/home/mahmud/go/src/github.com/mahmud3253/Project/User_Service'
+ 
+CGO_ENABLED=0 GOOS=linux go build -mod=vendor -a -installsuffix cgo -o /home/mahmud/go/src/github.com/mahmud3253/Project/User_Service/bin/ /main.go
+make: Leaving directory '/home/mahmud/go/src/github.com/mahmud3253/Project/User_Service'
  

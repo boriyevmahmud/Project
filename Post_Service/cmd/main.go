@@ -1,13 +1,14 @@
 package main
 
 import (
-	"Project/template-service/config"
-	pb "Project/template-service/genproto"
-	"Project/template-service/pkg/db"
-	"Project/template-service/pkg/logger"
-	"Project/template-service/service"
-	grpcClient "Project/template-service/service/grpc_client"
 	"net"
+
+	"github.com/mahmud3253/Project/Post_Service/config"
+	pb "github.com/mahmud3253/Project/Post_Service/genproto"
+	"github.com/mahmud3253/Project/Post_Service/pkg/db"
+	"github.com/mahmud3253/Project/Post_Service/pkg/logger"
+	"github.com/mahmud3253/Project/Post_Service/service"
+	grpcClient "github.com/mahmud3253/Project/Post_Service/service/grpc_client"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -34,7 +35,7 @@ func main() {
 		log.Error("error establishing grpc connection", logger.Error(err))
 		return
 	}
-	
+
 	PostService := service.NewUserService(connDB, log, grpcC)
 
 	lis, err := net.Listen("tcp", cfg.RPCPort)

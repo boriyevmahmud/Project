@@ -1,7 +1,7 @@
 package postgres
 
 import (
-	pb "Project/template-service/genproto"
+	pb "github.com/mahmud3253/Project/Post_Service/genproto"
 
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"

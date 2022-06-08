@@ -1,26 +1,27 @@
 package db
 
 import (
-	config "Project/template-service/config"
 	"fmt"
+
+	config "github.com/mahmud3253/Project/User_Service/config"
 
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq" //postgres drivers
 )
 
 func ConnectToDB(cfg config.Config) (*sqlx.DB, error) {
-    psqlString := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
-        cfg.PostgresHost,
-        cfg.PostgresPort,
-        cfg.PostgresUser,
-        cfg.PostgresPassword,
-        cfg.PostgresDatabase,
-    )
+	psqlString := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
+		cfg.PostgresHost,
+		cfg.PostgresPort,
+		cfg.PostgresUser,
+		cfg.PostgresPassword,
+		cfg.PostgresDatabase,
+	)
 
-    connDb, err := sqlx.Connect("postgres", psqlString)
-    if err != nil {
-        return nil, err
-    }
+	connDb, err := sqlx.Connect("postgres", psqlString)
+	if err != nil {
+		return nil, err
+	}
 
-    return connDb, nil
+	return connDb, nil
 }

@@ -1,10 +1,11 @@
 package grpcClient
 
 import (
-	"Project/template-service/config"
 	"fmt"
 
-	pb "Project/template-service/genproto"
+	"github.com/mahmud3253/Project/User_Service/config"
+
+	pb "github.com/mahmud3253/Project/User_Service/genproto"
 	"google.golang.org/grpc"
 )
 
@@ -35,6 +36,6 @@ func New(cfg config.Config) (*GrpcClient, error) {
 	}, nil
 }
 
-func(s *GrpcClient) PostService() pb.PostServiceClient{
+func (s *GrpcClient) PostService() pb.PostServiceClient {
 	return s.postService
 }

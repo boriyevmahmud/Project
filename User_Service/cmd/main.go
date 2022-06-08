@@ -1,13 +1,14 @@
 package main
 
 import (
-	"Project/template-service/config"
-	pb "Project/template-service/genproto"
-	"Project/template-service/pkg/db"
-	"Project/template-service/pkg/logger"
-	"Project/template-service/service"
 	"net"
-	grpcClient "Project/template-service/service/grpc_client"
+
+	"github.com/mahmud3253/Project/User_Service/config"
+	pb "github.com/mahmud3253/Project/User_Service/genproto"
+	"github.com/mahmud3253/Project/User_Service/pkg/db"
+	"github.com/mahmud3253/Project/User_Service/pkg/logger"
+	"github.com/mahmud3253/Project/User_Service/service"
+	grpcClient "github.com/mahmud3253/Project/User_Service/service/grpc_client"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"

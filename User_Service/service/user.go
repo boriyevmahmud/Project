@@ -1,12 +1,13 @@
 package service
 
 import (
-	pb "Project/template-service/genproto"
-	l "Project/template-service/pkg/logger"
-	cl "Project/template-service/service/grpc_client"
-	storage "Project/template-service/storage"
 	"context"
 	"fmt"
+
+	pb "github.com/mahmud3253/Project/User_Service/genproto"
+	l "github.com/mahmud3253/Project/User_Service/pkg/logger"
+	cl "github.com/mahmud3253/Project/User_Service/service/grpc_client"
+	storage "github.com/mahmud3253/Project/User_Service/storage"
 
 	"github.com/gofrs/uuid"
 	"github.com/jmoiron/sqlx"

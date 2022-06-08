@@ -1,7 +1,7 @@
 package postgres
 
 import (
-	pb "Project/template-service/genproto"
+	pb "github.com/mahmud3253/Project/User_Service/genproto"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -88,7 +88,7 @@ func (r *userRepo) ListUser(req *pb.ListUserReq) (*pb.ListUserResponse, error) {
 
 	offset := (req.Page - 1) * req.Limit
 
-	rows, err := r.db.Query("select id,first_name,last_name from users  OFFSET $1 LIMIT $2",offset,req.Limit)
+	rows, err := r.db.Query("select id,first_name,last_name from users  OFFSET $1 LIMIT $2", offset, req.Limit)
 	if err != nil {
 		return nil, err
 	}

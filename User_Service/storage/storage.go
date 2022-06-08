@@ -1,8 +1,8 @@
 package storage
 
 import (
-	"Project/template-service/storage/postgres"
-	"Project/template-service/storage/repo"
+	"github.com/mahmud3253/Project/User_Service/storage/postgres"
+	"github.com/mahmud3253/Project/User_Service/storage/repo"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -28,4 +28,3 @@ func NewStoragePg(db *sqlx.DB) *storagePg {
 func (s storagePg) User() repo.UserStorageI {
 	return s.userRepo
 }
-
