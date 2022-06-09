@@ -13,8 +13,36 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
+type CreateUserRequestBody struct {
+	Id        string  `protobuf:"bytes,1,opt,name=id,proto3" json:"id"`
+	FirstName string  `protobuf:"bytes,2,opt,name=first_name,json=firstName,proto3" json:"first_name"`
+	LastName  string  `protobuf:"bytes,3,opt,name=last_name,json=lastName,proto3" json:"last_name"`
+	Posts     []*Post `protobuf:"bytes,4,rep,name=posts,proto3" json:"posts"`
+}
+
+type Post struct {
+	Id          string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id"`
+	Name        string   `protobuf:"bytes,2,opt,name=name,proto3" json:"name"`
+	Description string   `protobuf:"bytes,3,opt,name=description,proto3" json:"description"`
+	UserId      string   `protobuf:"bytes,4,opt,name=user_id,json=userId,proto3" json:"user_id"`
+	Medias      []*Media `protobuf:"bytes,5,rep,name=medias,proto3" json:"medias"`
+}
+
+type Media struct {
+	Id   string `protobuf:"bytes,1,opt,name=id,proto3" json:"id"`
+	Type string `protobuf:"bytes,2,opt,name=type,proto3" json:"type"`
+	Link string `protobuf:"bytes,3,opt,name=link,proto3" json:"link"`
+}
+
 // CreateUser creates user
-// route /v1/users [post]
+// @Summary Create user summary
+// @Description This Api is using for creating new user
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param user body CreateUserRequestBody true "user body"
+// @Success 200 {string} Succes!
+// @Router /v1/users [post]
 func (h *handlerV1) CreateUser(c *gin.Context) {
 	var (
 		body        pb.User
@@ -46,6 +74,15 @@ func (h *handlerV1) CreateUser(c *gin.Context) {
 	c.JSON(http.StatusCreated, response)
 }
 
+// GetUser get user by id
+// @Summary Get user user summary
+// @Description This api is using for getting user by id
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param id path string true "User ID"
+// @Succes 200 {string} CreateUserRequestBody
+// @Router /v1/users/getbyid/{id} [get]
 func (h *handlerV1) GetUserById(c *gin.Context) {
 	var jspbMarshal protojson.MarshalOptions
 	jspbMarshal.UseProtoNames = true
@@ -67,31 +104,15 @@ func (h *handlerV1) GetUserById(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-// GetUser gets user by id
-// route /v1/users/{id} [get]
-// func (h *handlerV1) 	GetUser(c *gin.Context) {
-// 	var jspbMarshal protojson.MarshalOptions
-// 	jspbMarshal.UseProtoNames = true
-
-// 	guid := c.Param("id")
-// 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(h.cfg.CtxTimeout))
-// 	defer cancel()
-
-// 	response, err := h.serviceManager.UserService().GetUserById(
-// 		ctx, &pb.GetUserByIdRequest{
-// 			Id: guid,
-// 		})
-// 	if err != nil {
-// 		c.JSON(http.StatusInternalServerError, gin.H{
-// 			"error": err.Error(),
-// 		})
-// 		h.log.Error("failed to get user", l.Error(err))
-// 		return
-// 	}
-
-// 	c.JSON(http.StatusOK, response)
-// }
-
+// DeleteUser deletes user
+// @Summary Delete user summary
+// @Description This Api is using for deleting user
+// @Tags user
+// @Accecpt json
+// @Produce json
+// @Param id path string true "User ID"
+// @Success 200 {string} Succes!
+// @Router /v1/users/delete/{id} [delete]
 func (h *handlerV1) DeleteUser(c *gin.Context) {
 	var jspbMarshal protojson.MarshalOptions
 	jspbMarshal.UseProtoNames = true
@@ -116,6 +137,16 @@ func (h *handlerV1) DeleteUser(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// UpdateUser update user
+// @Summary Update user
+// @Description This Api is using for updating user with posts
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param id path string true "user ID"
+// @Param user body CreateUserRequestBody true "user body"
+// @Success 200 {string} Succes!
+// @Router /v1/users/update/{id}  [put]
 func (h *handlerV1) UpdateUser(c *gin.Context) {
 	var jspbMarshal protojson.MarshalOptions
 	jspbMarshal.UseProtoNames = true
@@ -142,6 +173,16 @@ func (h *handlerV1) UpdateUser(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+// ListUser list user
+// @Summary ListUser user
+// @Description This Api is using for listing users
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param page query string true "Page"
+// @Param limit query string true "Limit"
+// @Success 200 {string} []CreateUserRequestBody
+// @Router /v1/users/listuser  [get]
 func (h *handlerV1) ListUser(c *gin.Context) {
 	p := c.Query("page")
 	l := c.Query("limit")

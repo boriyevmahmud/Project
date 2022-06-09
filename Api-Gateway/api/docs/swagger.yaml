@@ -1,0 +1,153 @@
+definitions:
+  v1.CreateUserRequestBody:
+    properties:
+      first_name:
+        type: string
+      id:
+        type: string
+      last_name:
+        type: string
+      posts:
+        items:
+          $ref: '#/definitions/v1.Post'
+        type: array
+    type: object
+  v1.Media:
+    properties:
+      id:
+        type: string
+      link:
+        type: string
+      type:
+        type: string
+    type: object
+  v1.Post:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      medias:
+        items:
+          $ref: '#/definitions/v1.Media'
+        type: array
+      name:
+        type: string
+      user_id:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /v1/users:
+    post:
+      consumes:
+      - application/json
+      description: This Api is using for creating new user
+      parameters:
+      - description: user body
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/v1.CreateUserRequestBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Create user summary
+      tags:
+      - user
+  /v1/users/delete/{id}:
+    delete:
+      description: This Api is using for deleting user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Delete user summary
+      tags:
+      - user
+  /v1/users/getbyid/{id}:
+    get:
+      consumes:
+      - application/json
+      description: This api is using for getting user by id
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Get user user summary
+      tags:
+      - user
+  /v1/users/listuser:
+    get:
+      consumes:
+      - application/json
+      description: This Api is using for listing users
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        required: true
+        type: string
+      - description: Limit
+        in: query
+        name: limit
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: ListUser user
+      tags:
+      - user
+  /v1/users/update/{id}:
+    put:
+      consumes:
+      - application/json
+      description: This Api is using for updating user with posts
+      parameters:
+      - description: user ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: user body
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/v1.CreateUserRequestBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Update user
+      tags:
+      - user
+swagger: "2.0"

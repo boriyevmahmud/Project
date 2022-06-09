@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Wed Jun  8 15:17:47 2022
+# Make data base, printed on Wed Jun  8 16:58:17 2022
 
 # Variables
 
@@ -51,7 +51,7 @@ VTE_VERSION = 6003
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # environment
-JOURNAL_STREAM = 8:49490
+JOURNAL_STREAM = 8:46834
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # environment
@@ -71,7 +71,9 @@ MAKELEVEL := 0
 # environment
 XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
 # environment
-DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# environment
+DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus,guid=9fb2aa273d06afb0e73068b562a04b80
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
@@ -113,7 +115,7 @@ DISABLE_WAYLAND = 1
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = 7d9de1b37b234b8faca78e57b150dff9
+INVOCATION_ID = 33d9c74b577f4273ab615017a85120ab
 # environment
 GDK_PIXBUF_MODULEDIR = /snap/code/97/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
 # default
@@ -145,7 +147,7 @@ ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
 GTK_MODULES = gail:atk-bridge
 # environment
-VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+GOMODCACHE = /home/mahmud/go/pkg/mod
 # environment
 HOME = /home/mahmud
 # environment
@@ -157,7 +159,7 @@ VSCODE_CODE_CACHE_PATH = /home/mahmud/.config/Code/CachedData/c3511e6c69bb39013c
 # environment
 LOGNAME = mahmud
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
 # environment
 SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void
 # environment
@@ -193,7 +195,7 @@ SHLVL = 1
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-da96acc2-e603-450d-84cc-aac9d67b0c28.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-dbfc2234-1a3d-4334-af6c-694d8f369bd2.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -213,7 +215,7 @@ LC_TELEPHONE = uz_UZ.UTF-8
 # default
 MAKE_COMMAND := make
 # environment
-OLDPWD = /home/mahmud/go/src/github.com/mahmud3253/Project
+OLDPWD = /home/mahmud/go
 # default
 .VARIABLES := 
 # automatic
@@ -251,7 +253,9 @@ SNAP_NAME = code
 # environment
 LC_ALL = C
 # environment
-GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/f92290fb_8d7e_46bc_a261_91c9adfee778
+DBUS_STARTER_BUS_TYPE = session
+# environment
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/f42a583f_9d2f_4cf4_add0_69875ddcbf66
 # automatic
 ^F = $(notdir $^)
 # environment
@@ -277,18 +281,20 @@ LANG = C
 # environment
 TERM = xterm-256color
 # environment
-VSCODE_PID = 9288
- 
+VSCODE_PID = 34719
+# environment
+DBUS_STARTER_ADDRESS = unix:path=/run/user/1000/bus,guid=9fb2aa273d06afb0e73068b562a04b80
 # variable set hash-table stats:
-# Load=133/1024=13%, Rehash=0, Collisions=19/158=12%
+# Load=136/1024=13%, Rehash=0, Collisions=20/161=12%
 
 # Pattern-specific Variable Values
+ 
 
 # No pattern-specific variable values.
 
 # Directories
 
-# . (device 2050, inode 135002): 16 files, no impossibilities.
+# . (device 2050, inode 1052846): 16 files, no impossibilities.
 
 # 16 files, no impossibilities in 1 directories.
 
@@ -316,7 +322,7 @@ proto-gen:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-08 13:20:11.771901358
+#  Last modified 2022-06-08 16:27:02.515496095
 #  File has been updated.
 #  Successfully updated.
 
@@ -347,6 +353,6 @@ build:
 # strcache performance: lookups = 29 / hit rate = 20%
 # hash-table stats:
 # Load=23/8192=0%, Rehash=0, Collisions=1/29=3%
-# Finished Make data base on Wed Jun  8 15:17:47 2022
+# Finished Make data base on Wed Jun  8 16:58:17 2022
 
  
