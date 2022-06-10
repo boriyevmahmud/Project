@@ -6,6 +6,7 @@ import (
 	"github.com/mahmud3253/Project/Api-Gateway/config"
 	"github.com/mahmud3253/Project/Api-Gateway/pkg/logger"
 	"github.com/mahmud3253/Project/Api-Gateway/services"
+	"github.com/mahmud3253/Project/Api-Gateway/storage/repo"
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -18,6 +19,7 @@ type Option struct {
 	Conf           config.Config
 	Logger         logger.Logger
 	ServiceManager services.IServiceManager
+	RedisRepo      repo.RedisRepositoryStorage
 }
 
 // New ...
@@ -31,6 +33,7 @@ func New(option Option) *gin.Engine {
 		Logger:         option.Logger,
 		ServiceManager: option.ServiceManager,
 		Cfg:            option.Conf,
+		Redis:          option.RedisRepo,
 	})
 
 	api := router.Group("/v1")
@@ -39,7 +42,6 @@ func New(option Option) *gin.Engine {
 	api.GET("/users/listuser", handlerV1.ListUser)
 	api.PUT("/users/update/:id", handlerV1.UpdateUser)
 	api.DELETE("/users/delete/:id", handlerV1.DeleteUser)
-
 
 	url := ginSwagger.URL("swagger/doc.json") // The url pointing to API definition
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))

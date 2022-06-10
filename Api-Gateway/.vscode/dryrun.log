@@ -1,5 +1,6 @@
 make --dry-run --always-make --keep-going --print-directory
 make: Entering directory '/home/mahmud/go/src/github.com/mahmud3253/Project/Api-Gateway'
-CGO_ENABLED=0 GOOS=darwin go build -mod=vendor -a -installsuffix cgo -o /home/mahmud/go/src/github.com/mahmud3253/Project/Api-Gateway/bin/template ./cmd/main.go
 make: Leaving directory '/home/mahmud/go/src/github.com/mahmud3253/Project/Api-Gateway'
  
+Makefile:15: *** missing separator.  Stop.
+

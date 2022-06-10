@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/goccy/go-json"
 	pb "github.com/mahmud3253/Project/Api-Gateway/genproto"
 	l "github.com/mahmud3253/Project/Api-Gateway/pkg/logger"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -68,6 +69,23 @@ func (h *handlerV1) CreateUser(c *gin.Context) {
 			"error": err.Error(),
 		})
 		h.log.Error("failed to create user", l.Error(err))
+		return
+	}
+	bodyByte, err := json.Marshal(response)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		h.log.Error("failed to set to redis", l.Error(err))
+		return
+	}
+
+	err = h.redisStorage.Set(body.FirstName, string(bodyByte))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		h.log.Error("failed to set redis", l.Error(err))
 		return
 	}
 
