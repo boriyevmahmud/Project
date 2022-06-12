@@ -1,8 +1,11 @@
 package postgres
 
 import (
+	"fmt"
+
 	pb "github.com/mahmud3253/Project/User_Service/genproto"
 
+	"github.com/gofrs/uuid"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -19,8 +22,12 @@ func (r *userRepo) CreateUser(user *pb.User) (*pb.User, error) {
 	var (
 		rUser = pb.User{}
 	)
-
-	err := r.db.QueryRow("INSERT INTO users (id, first_name, last_name) VALUES($1, $2, $3) RETURNING id, first_name, last_name", user.Id, user.FirstName, user.LastName).Scan(
+	id1, err := uuid.NewV4()
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println(id1)
+	err = r.db.QueryRow("INSERT INTO users (id, first_name, last_name) VALUES($1, $2, $3) RETURNING id, first_name, last_name", id1, user.FirstName, user.LastName).Scan(
 		&rUser.Id,
 		&rUser.FirstName,
 		&rUser.LastName,

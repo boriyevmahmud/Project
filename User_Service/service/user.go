@@ -9,7 +9,7 @@ import (
 	cl "github.com/mahmud3253/Project/User_Service/service/grpc_client"
 	storage "github.com/mahmud3253/Project/User_Service/storage"
 
-	"github.com/gofrs/uuid"
+	//"github.com/gofrs/uuid"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -30,21 +30,17 @@ func NewUserService(db *sqlx.DB, log l.Logger, client cl.GrpcClientI) *UserServi
 }
 
 func (s *UserService) CreateUser(ctx context.Context, req *pb.User) (*pb.User, error) {
-	id, err := uuid.NewV4()
-	if err != nil {
-		s.logger.Error("failed while generating uuid for new user", l.Error(err))
-		return nil, err
-	}
-	req.Id = id.String()
+	
 	user, err := s.storage.User().CreateUser(req)
 	if err != nil {
 		s.logger.Error("failed while inserting user", l.Error(err))
 		return nil, err
 	}
 
+
 	if req.Posts != nil {
 		for _, post := range req.Posts {
-			post.UserId = req.Id
+			post.UserId = user.Id
 			_, err := s.client.PostService().Create(ctx, post)
 			if err != nil {
 				s.logger.Error("failed while inserting user post", l.Error(err))
