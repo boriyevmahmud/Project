@@ -36,7 +36,7 @@ func TestUserRepo_Crete(t *testing.T) {
 				t.Fatalf("%s: expected: %v, got: %v", tc.name, tc.wantErr, err)
 			}
 			got.Id = ""
-			got.Posts = nil
+			//got.Posts = nil
 			if !reflect.DeepEqual(tc.want, got) {
 				t.Fatalf("%s: expected: %v,got: %v", tc.name, tc.want, got)
 			}

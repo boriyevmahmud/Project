@@ -14,3 +14,12 @@ lint: ## Run golangci-lint with printing to stdout
 swag-gen:
 	echo ${REGISTRY}
 	swag init -g api/router.go -o api/docs
+
+up-version:
+	migrate -source file:./migrations/ -database 'postgres://postgres:1@localhost:5432/users?sslmode=disable' up
+
+down-version:
+	migrate -source file:./migrations/ -database 'postgres://postgres:1@localhost:5432/users?sslmode=disable' down
+
+create:
+	migrate create -ext sql -dir migrations -seq create_test_table

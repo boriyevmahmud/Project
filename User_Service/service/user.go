@@ -41,11 +41,12 @@ func (s *UserService) CreateUser(ctx context.Context, req *pb.User) (*pb.User, e
 	if req.Posts != nil {
 		for _, post := range req.Posts {
 			post.UserId = user.Id
-			_, err := s.client.PostService().Create(ctx, post)
+			postss, err := s.client.PostService().Create(ctx, post)
 			if err != nil {
 				s.logger.Error("failed while inserting user post", l.Error(err))
 				return nil, err
 			}
+			user.Posts=append(user.Posts,postss)
 		}
 	}
 	return user, nil
