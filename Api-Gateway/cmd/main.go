@@ -42,6 +42,8 @@ func main() {
 		ServiceManager: serviceManager,
 		RedisRepo: redisRepo,
 	})
+	
+
 
 	if err := server.Run(cfg.HTTPPort); err != nil {
 		log.Fatal("failed to run http server", logger.Error(err))

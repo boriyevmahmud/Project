@@ -143,6 +143,33 @@ const docTemplate = `{
                 }
             }
         },
+        "/v1/users/register": {
+            "post": {
+                "description": "This api is using for registering user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Register user summary",
+                "parameters": [
+                    {
+                        "description": "user_body",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.RegisterUserAuthReqBody"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/v1/users/update/{id}": {
             "put": {
                 "description": "This Api is using for updating user with posts",
@@ -183,6 +210,29 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/v1/users/verfication": {
+            "post": {
+                "description": "This api using for verifying registered user",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "parameters": [
+                    {
+                        "description": "user body",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.Emailver"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
         }
     },
     "definitions": {
@@ -203,6 +253,17 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/v1.Post"
                     }
+                }
+            }
+        },
+        "v1.Emailver": {
+            "type": "object",
+            "properties": {
+                "Code": {
+                    "type": "string"
+                },
+                "Email": {
+                    "type": "string"
                 }
             }
         },
@@ -239,6 +300,30 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "v1.RegisterUserAuthReqBody": {
+            "type": "object",
+            "properties": {
+                "Code": {
+                    "type": "string"
+                },
+                "Email": {
+                    "type": "string"
+                },
+                "FirstName": {
+                    "description": "Id          string ` + "`" + `protobuf:\"bytes,1,opt,name=Id,proto3\" json:\"Id\"` + "`" + `",
+                    "type": "string"
+                },
+                "Password": {
+                    "type": "string"
+                },
+                "PhoneNumber": {
+                    "type": "string"
+                },
+                "Username": {
                     "type": "string"
                 }
             }

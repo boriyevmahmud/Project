@@ -10,6 +10,8 @@ service UserService {
     rpc DeleteById(DeleteByIdReq)returns(Empty);
     rpc UpdateById(UpdateByIdReq) returns(Empty);
     rpc ListUser(ListUserReq) returns(ListUserResponse);
+    rpc RegisterUser(CreateUserAuthReqBody) returns(CreateUserAuthResBody);
+    rpc CheckField(CheckFieldRequest) returns(CheckFieldResponse);
 }
 
 message GetByIdRequest {
@@ -18,6 +20,33 @@ message GetByIdRequest {
 
 message DeleteByIdReq{
     string user_id=1;
+}
+
+message CreateUserAuthReqBody{
+	string Id=1;
+	string FirstName=2;
+	string Username=3;
+	string PhoneNumber=4;
+	string Email=5;
+    string Code=6;
+    string Password=7;
+}
+
+message CreateUserAuthResBody{
+    string Id=1;
+	string FirstName=2;
+	string Username=3;
+	string PhoneNumber=4;
+	string Email=5;
+    string Code=6;
+}
+message CheckFieldRequest{
+    string field=1;
+    string  value=2;
+}
+
+message CheckFieldResponse{
+    bool Check=1;
 }
 
 message ListUserReq{

@@ -8,6 +8,8 @@ import (
 	l "github.com/mahmud3253/Project/User_Service/pkg/logger"
 	cl "github.com/mahmud3253/Project/User_Service/service/grpc_client"
 	storage "github.com/mahmud3253/Project/User_Service/storage"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	//"github.com/gofrs/uuid"
 	"github.com/jmoiron/sqlx"
@@ -30,13 +32,12 @@ func NewUserService(db *sqlx.DB, log l.Logger, client cl.GrpcClientI) *UserServi
 }
 
 func (s *UserService) CreateUser(ctx context.Context, req *pb.User) (*pb.User, error) {
-	
+
 	user, err := s.storage.User().CreateUser(req)
 	if err != nil {
 		s.logger.Error("failed while inserting user", l.Error(err))
 		return nil, err
 	}
-
 
 	if req.Posts != nil {
 		for _, post := range req.Posts {
@@ -46,9 +47,20 @@ func (s *UserService) CreateUser(ctx context.Context, req *pb.User) (*pb.User, e
 				s.logger.Error("failed while inserting user post", l.Error(err))
 				return nil, err
 			}
-			user.Posts=append(user.Posts,postss)
+			user.Posts = append(user.Posts, postss)
 		}
 	}
+	return user, nil
+}
+
+func (s *UserService) RegisterUser(ctx context.Context, req *pb.CreateUserAuthReqBody) (*pb.CreateUserAuthResBody, error) {
+	user, err := s.storage.User().RegisterUser(req)
+	fmt.Println(err, "//////////////////////////")
+	if err != nil {
+		s.logger.Error("failed while register user", l.Error(err))
+		return nil, err
+	}
+
 	return user, nil
 }
 
@@ -148,5 +160,17 @@ func (s *UserService) ListUser(ctx context.Context, req *pb.ListUserReq) (*pb.Li
 	return &pb.ListUserResponse{
 		Users: user,
 		Count: users.Count,
+	}, err
+}
+
+func (s *UserService) CheckField(ctx context.Context, req *pb.CheckFieldRequest) (*pb.CheckFieldResponse, error) {
+	check, err := s.storage.User().CheckField(req.Field, req.Value)
+	if err != nil {
+		s.logger.Error("failed while getting user", l.Error(err))
+		return nil, status.Error(codes.Internal, "failed while getting user")
+
+	}
+	return &pb.CheckFieldResponse{
+		Check: check,
 	}, err
 }

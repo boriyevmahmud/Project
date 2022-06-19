@@ -2,16 +2,24 @@ package v1
 
 import (
 	"context"
+	"crypto/sha1"
+	"crypto/tls"
+	"encoding/hex"
 	"fmt"
+	"math/rand"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
+	"unicode"
 
 	"github.com/gin-gonic/gin"
 	"github.com/goccy/go-json"
+	"github.com/gomodule/redigo/redis"
 	pb "github.com/mahmud3253/Project/Api-Gateway/genproto"
 	l "github.com/mahmud3253/Project/Api-Gateway/pkg/logger"
 	"google.golang.org/protobuf/encoding/protojson"
+	gomail "gopkg.in/mail.v2"
 )
 
 type CreateUserRequestBody struct {
@@ -19,6 +27,21 @@ type CreateUserRequestBody struct {
 	FirstName string  `protobuf:"bytes,2,opt,name=first_name,json=firstName,proto3" json:"first_name"`
 	LastName  string  `protobuf:"bytes,3,opt,name=last_name,json=lastName,proto3" json:"last_name"`
 	Posts     []*Post `protobuf:"bytes,4,rep,name=posts,proto3" json:"posts"`
+}
+
+type RegisterUserAuthReqBody struct {
+	//	Id          string `protobuf:"bytes,1,opt,name=Id,proto3" json:"Id"`
+	FirstName   string `protobuf:"bytes,2,opt,name=FirstName,proto3" json:"FirstName"`
+	Username    string `protobuf:"bytes,3,opt,name=Username,proto3" json:"Username"`
+	PhoneNumber string `protobuf:"bytes,4,opt,name=PhoneNumber,proto3" json:"PhoneNumber"`
+	Email       string `protobuf:"bytes,5,opt,name=Email,proto3" json:"Email"`
+	Code        string `protobuf:"bytes,6,opt,name=Code,proto3" json:"Code"`
+	Password    string `protobuf:"bytes,7,opt,name=Password,proto3" json:"Password"`
+}
+
+type Emailver struct {
+	Email string `json:"Email"`
+	Code  string `json:"Code"`
 }
 
 type Post struct {
@@ -239,4 +262,272 @@ func (h *handlerV1) ListUser(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, response)
+}
+
+// RegisterUser register user
+// @Summary Register user summary
+// @Description This api is using for registering user
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param user body RegisterUserAuthReqBody true "user_body"
+// @Succes 200 {string} Succes!
+// @Router /v1/users/register [post]
+func (h *handlerV1) RegisterUser(c *gin.Context) {
+	var (
+		body        RegisterUserAuthReqBody
+		jspbMarshal protojson.MarshalOptions
+	)
+	jspbMarshal.UseProtoNames = true
+
+	err := c.ShouldBindJSON(&body)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		h.log.Error("failed to bind json", l.Error(err))
+		return
+	}
+
+	// Check password
+	err = verifyPassword(body.Password)
+	if err != nil {
+		c.JSON(http.StatusBadGateway, gin.H{
+			"error": err.Error(),
+		})
+		h.log.Error("your password doesn't respond to requests", l.Error(err))
+		return
+	}
+
+	//Hashing password
+	hash := sha1.New()
+	hashedPassword := hex.EncodeToString(hash.Sum(nil))
+	fmt.Println(hashedPassword)
+
+	body.Password = hashedPassword
+	body.Email = strings.TrimSpace(body.Email)
+	body.Email = strings.ToLower(body.Email)
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(h.cfg.CtxTimeout))
+	defer cancel()
+
+	exists, err := h.serviceManager.UserService().CheckField(ctx, &pb.CheckFieldRequest{
+		Field: "email",
+		Value: body.Email,
+	})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		h.log.Error("failed to check email uniquess", l.Error(err))
+		return
+	}
+	if exists.Check {
+		c.JSON(http.StatusConflict, gin.H{
+			"error": "This email already in use, please use another email",
+		})
+		h.log.Error("failed to check email uniquess", l.Error(err))
+		return
+	}
+
+	exists, err = h.serviceManager.UserService().CheckField(ctx, &pb.CheckFieldRequest{
+		Field: "username",
+		Value: body.Username,
+	})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		h.log.Error("failed to check username uniquess", l.Error(err))
+		return
+	}
+	if exists.Check {
+		c.JSON(http.StatusConflict, gin.H{
+			"error": "This username already in use, please use another username",
+		})
+		h.log.Error("failed to check username uniquess", l.Error(err))
+		return
+	}
+	// generate 6 digits code for sending gmail
+	min := 99999
+	max := 1000000
+	rand.Seed(time.Now().UnixNano())
+	gen := rand.Intn((max - min) + min)
+	code := strconv.Itoa(gen)
+
+	body.Code = code
+
+	bodyByte, err := json.Marshal(body)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		h.log.Error("failed to set to redis", l.Error(err))
+		return
+	}
+
+	// writing to redis
+	err = h.redisStorage.SetWithTTL(body.Email, string(bodyByte), int64(5*time.Minute))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		h.log.Error("failed to set redis", l.Error(err))
+		return
+	}
+	fmt.Printf("%T", code)
+	fmt.Println(code)
+	SendEmail(body.Email, code)
+
+}
+
+// VerifyUser verify user
+// @Description This api using for verifying registered user
+// @Tags user
+// @Accept json
+// @Producejson
+// @Param user body Emailver true "user body"
+// @Succes 200 {string} success
+// @Router /v1/users/verfication [post]
+func (h *handlerV1) VerifyUser(c *gin.Context) {
+	var dataemail Emailver
+	var jspbMarshal protojson.MarshalOptions
+
+	jspbMarshal.UseProtoNames = true
+	err := c.ShouldBindJSON(&dataemail)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		h.log.Error("failed to bind json", l.Error(err))
+		return
+	}
+	dataemail.Email = strings.TrimSpace(dataemail.Email)
+	dataemail.Email = strings.ToLower(dataemail.Email)
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(h.cfg.CtxTimeout))
+	defer cancel()
+
+	getRedis, err := redis.String(h.redisStorage.Get(dataemail.Email))
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		h.log.Error("failed to getting redis for write db", l.Error(err))
+		return
+	}
+
+	var redisBody *pb.CreateUserAuthReqBody
+	_ = json.Unmarshal([]byte(getRedis), &redisBody)
+
+	fmt.Println(redisBody)
+
+	if dataemail.Code == redisBody.Code {
+		_, err := h.serviceManager.UserService().RegisterUser(ctx, redisBody)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": err.Error(),
+			})
+			h.log.Error("failed to writing db", l.Error(err))
+			return
+		} else {
+			h.log.Error("failed to writing db", l.Error(err))
+		}
+	} else if dataemail.Code != redisBody.Code {
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": err.Error(),
+			})
+			h.log.Error("your code is wrong", l.Error(err))
+			return
+		}
+	}
+}
+
+func SendEmail(email, code string) {
+	m := gomail.NewMessage()
+
+	// Set E-Mail sender
+	m.SetHeader("From", "testapigomail@gmail.com")
+
+	// Set E-Mail receivers
+	m.SetHeader("To", email)
+
+	// Set E-Mail subject
+	m.SetHeader("code:", "dfsdfdsf")
+
+	m.SetBody("text/plain", code)
+
+	// Settings for SMTP server
+	d := gomail.NewDialer("smtp.gmail.com", 587, "testapigomail@gmail.com", "cpebajsbmuddenig")
+
+	// This is only needed when SSL/TLS certificate is not valid on server.
+	// In production this should be set to false.
+	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
+
+	// Now send E-Mail
+	if err := d.DialAndSend(m); err != nil {
+		fmt.Println(err)
+		panic(err)
+	}
+
+}
+
+func verifyPassword(password string) error {
+	var uppercasePresent bool
+	var lowercasePresent bool
+	var numberPresent bool
+	var specialCharPresent bool
+	const minPassLength = 8
+	const maxPassLength = 32
+	var passLen int
+	var errorString string
+
+	for _, ch := range password {
+		switch {
+		case unicode.IsNumber(ch):
+			numberPresent = true
+			passLen++
+		case unicode.IsUpper(ch):
+			uppercasePresent = true
+			passLen++
+		case unicode.IsLower(ch):
+			lowercasePresent = true
+			passLen++
+		case unicode.IsPunct(ch) || unicode.IsSymbol(ch):
+			specialCharPresent = true
+			passLen++
+		case ch == ' ':
+			passLen++
+		}
+	}
+	appendError := func(err string) {
+		if len(strings.TrimSpace(errorString)) != 0 {
+			errorString += ", " + err
+		} else {
+			errorString = err
+		}
+	}
+	if !lowercasePresent {
+		appendError("lowercase letter missing")
+	}
+	if !uppercasePresent {
+		appendError("uppercase letter missing")
+	}
+	if !numberPresent {
+		appendError("atleast one numeric character required")
+	}
+	if !specialCharPresent {
+		appendError("special character missing")
+	}
+	if !(minPassLength <= passLen && passLen <= maxPassLength) {
+		appendError(fmt.Sprintf("password length must be between %d to %d characters long", minPassLength, maxPassLength))
+	}
+
+	if len(errorString) != 0 {
+		return fmt.Errorf(errorString)
+	}
+	return nil
 }

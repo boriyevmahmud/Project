@@ -12,4 +12,6 @@ type UserStorageI interface {
 	DeleteById(id string) (*pb.Empty, error)
 	UpdateById(*pb.UpdateByIdReq) (*pb.Empty, error)
 	ListUser(*pb.ListUserReq) (*pb.ListUserResponse, error)
+	CheckField(field, value string) (bool, error)
+	RegisterUser(*pb.CreateUserAuthReqBody) (*pb.CreateUserAuthResBody, error)
 }

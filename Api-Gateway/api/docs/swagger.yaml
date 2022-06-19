@@ -12,6 +12,13 @@ definitions:
           $ref: '#/definitions/v1.Post'
         type: array
     type: object
+  v1.Emailver:
+    properties:
+      Code:
+        type: string
+      Email:
+        type: string
+    type: object
   v1.Media:
     properties:
       id:
@@ -34,6 +41,22 @@ definitions:
       name:
         type: string
       user_id:
+        type: string
+    type: object
+  v1.RegisterUserAuthReqBody:
+    properties:
+      Code:
+        type: string
+      Email:
+        type: string
+      FirstName:
+        description: Id          string `protobuf:"bytes,1,opt,name=Id,proto3" json:"Id"`
+        type: string
+      Password:
+        type: string
+      PhoneNumber:
+        type: string
+      Username:
         type: string
     type: object
 info:
@@ -123,6 +146,24 @@ paths:
       summary: ListUser user
       tags:
       - user
+  /v1/users/register:
+    post:
+      consumes:
+      - application/json
+      description: This api is using for registering user
+      parameters:
+      - description: user_body
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/v1.RegisterUserAuthReqBody'
+      produces:
+      - application/json
+      responses: {}
+      summary: Register user summary
+      tags:
+      - user
   /v1/users/update/{id}:
     put:
       consumes:
@@ -148,6 +189,21 @@ paths:
           schema:
             type: string
       summary: Update user
+      tags:
+      - user
+  /v1/users/verfication:
+    post:
+      consumes:
+      - application/json
+      description: This api using for verifying registered user
+      parameters:
+      - description: user body
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/v1.Emailver'
+      responses: {}
       tags:
       - user
 swagger: "2.0"

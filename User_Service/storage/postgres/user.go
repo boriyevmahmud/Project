@@ -39,6 +39,25 @@ func (r *userRepo) CreateUser(user *pb.User) (*pb.User, error) {
 	return &rUser, nil
 }
 
+func (r *userRepo) RegisterUser(user *pb.CreateUserAuthReqBody) (*pb.CreateUserAuthResBody, error) {
+	var rUser = pb.CreateUserAuthResBody{}
+	id, err := uuid.NewV4()
+	if err != nil {
+		return nil, err
+	}
+	err = r.db.QueryRow("INSERT INTO user_reg (id,firstname,username,phonenumber,email,password) values($1,$2,$3,$4,$5,$6)RETURNING id,firstname,username,phonenumber,email", id, user.FirstName, user.Username, user.PhoneNumber, user.Email,user.Password).Scan(
+		&rUser.Id,
+		&rUser.FirstName,
+		&rUser.Username,
+		&rUser.PhoneNumber,
+		&rUser.Email,
+	)
+	if err != nil {
+		return &pb.CreateUserAuthResBody{}, err
+	}
+	return &rUser, err
+}
+
 func (r *userRepo) GetByIdUser(ID string) (*pb.User, error) {
 	var (
 		rUser = pb.User{}
@@ -117,4 +136,27 @@ func (r *userRepo) ListUser(req *pb.ListUserReq) (*pb.ListUserResponse, error) {
 		Users: rUser.Users,
 		Count: int64(count),
 	}, nil
+}
+
+func (r *userRepo) CheckField(field, value string) (bool, error) {
+	var existClient int64
+	if field == "username" {
+		row := r.db.QueryRow(`SELECT count(1) FROM user_reg where username=$1`, value)
+
+		if err := row.Scan(&existClient); err != nil {
+			return false, err
+		}
+	} else if field == "email" {
+		row := r.db.QueryRow(`SELECT count(1) FROM user_reg where email=$1`, value)
+		if err := row.Scan(&existClient); err != nil {
+			return false, err
+		}
+	} else {
+		return false, nil
+	}
+	if existClient == 0 {
+		return false, nil
+	} else {
+		return true, nil
+	}
 }
