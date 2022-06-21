@@ -9,5 +9,6 @@ require (
 	github.com/lib/pq v1.10.6
 	github.com/spf13/cast v1.5.0
 	go.uber.org/zap v1.21.0
+	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 	google.golang.org/grpc v1.47.0
 )

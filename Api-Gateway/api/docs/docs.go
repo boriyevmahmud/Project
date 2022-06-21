@@ -143,6 +143,37 @@ const docTemplate = `{
                 }
             }
         },
+        "/v1/users/login/{email}/{password}": {
+            "get": {
+                "description": "This api using for logging registered user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Email",
+                        "name": "email",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Password",
+                        "name": "password",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/v1/users/register": {
             "post": {
                 "description": "This api is using for registering user",
@@ -215,6 +246,9 @@ const docTemplate = `{
             "post": {
                 "description": "This api using for verifying registered user",
                 "consumes": [
+                    "application/json"
+                ],
+                "produces": [
                     "application/json"
                 ],
                 "tags": [

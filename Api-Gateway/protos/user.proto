@@ -12,6 +12,7 @@ service UserService {
     rpc ListUser(ListUserReq) returns(ListUserResponse);
     rpc RegisterUser(CreateUserAuthReqBody) returns(CreateUserAuthResBody);
     rpc CheckField(CheckFieldRequest) returns(CheckFieldResponse);
+    rpc LoginUser(LoginRequest) returns(LoginResponse);
 }
 
 message GetByIdRequest {
@@ -20,6 +21,20 @@ message GetByIdRequest {
 
 message DeleteByIdReq{
     string user_id=1;
+}
+
+message LoginRequest{
+    string Email=1;
+    string Password=2;
+}
+
+message LoginResponse{
+    string Id=1;
+	string FirstName=2;
+	string Username=3;
+	string PhoneNumber=4;
+	string Email=5;
+    string Password=6;
 }
 
 message CreateUserAuthReqBody{

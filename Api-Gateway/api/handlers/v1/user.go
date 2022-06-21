@@ -2,9 +2,7 @@ package v1
 
 import (
 	"context"
-	"crypto/sha1"
 	"crypto/tls"
-	"encoding/hex"
 	"fmt"
 	"math/rand"
 	"net/http"
@@ -18,6 +16,7 @@ import (
 	"github.com/gomodule/redigo/redis"
 	pb "github.com/mahmud3253/Project/Api-Gateway/genproto"
 	l "github.com/mahmud3253/Project/Api-Gateway/pkg/logger"
+	"golang.org/x/crypto/bcrypt"
 	"google.golang.org/protobuf/encoding/protojson"
 	gomail "gopkg.in/mail.v2"
 )
@@ -50,6 +49,14 @@ type Post struct {
 	Description string   `protobuf:"bytes,3,opt,name=description,proto3" json:"description"`
 	UserId      string   `protobuf:"bytes,4,opt,name=user_id,json=userId,proto3" json:"user_id"`
 	Medias      []*Media `protobuf:"bytes,5,rep,name=medias,proto3" json:"medias"`
+}
+
+type LoginResponse struct {
+	Id          string `protobuf:"bytes,1,opt,name=Id,proto3" json:"Id"`
+	FirstName   string `protobuf:"bytes,2,opt,name=FirstName,proto3" json:"FirstName"`
+	Username    string `protobuf:"bytes,3,opt,name=Username,proto3" json:"Username"`
+	PhoneNumber string `protobuf:"bytes,4,opt,name=PhoneNumber,proto3" json:"PhoneNumber"`
+	Email       string `protobuf:"bytes,5,opt,name=Email,proto3" json:"Email"`
 }
 
 type Media struct {
@@ -300,11 +307,10 @@ func (h *handlerV1) RegisterUser(c *gin.Context) {
 	}
 
 	//Hashing password
-	hash := sha1.New()
-	hashedPassword := hex.EncodeToString(hash.Sum(nil))
-	fmt.Println(hashedPassword)
+	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(body.Password), len(body.Password))
+	fmt.Println(string(hashedPassword))
 
-	body.Password = hashedPassword
+	body.Password = string(hashedPassword)
 	body.Email = strings.TrimSpace(body.Email)
 	body.Email = strings.ToLower(body.Email)
 
@@ -385,7 +391,7 @@ func (h *handlerV1) RegisterUser(c *gin.Context) {
 // @Description This api using for verifying registered user
 // @Tags user
 // @Accept json
-// @Producejson
+// @Produce json
 // @Param user body Emailver true "user body"
 // @Succes 200 {string} success
 // @Router /v1/users/verfication [post]
@@ -446,6 +452,43 @@ func (h *handlerV1) VerifyUser(c *gin.Context) {
 	}
 }
 
+var email string
+var password string
+
+// Login login user
+// @Description This api using for logging registered user
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param email path string true "Email"
+// @Param password path string true "Password"
+// @Succes 200 {string} LoginResponse
+// @Router /v1/users/login/{email}/{password} [get]
+func (h *handlerV1) Login(c *gin.Context) {
+	var jspbMarshal protojson.MarshalOptions
+	jspbMarshal.UseProtoNames = true
+	email = c.Param("email")
+	password = c.Param("password")
+	fmt.Println(password)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(h.cfg.CtxTimeout))
+	defer cancel()
+
+	userData, err := h.serviceManager.UserService().LoginUser(ctx, &pb.LoginRequest{
+		Email:    email,
+		Password: password,
+	})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		h.log.Error("failed to getting datas", l.Error(err))
+		return
+	}
+	userData.Password=""
+	c.JSON(http.StatusOK, userData)
+
+}
+
 func SendEmail(email, code string) {
 	m := gomail.NewMessage()
 
@@ -472,7 +515,6 @@ func SendEmail(email, code string) {
 		fmt.Println(err)
 		panic(err)
 	}
-
 }
 
 func verifyPassword(password string) error {

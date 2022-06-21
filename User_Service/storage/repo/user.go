@@ -14,4 +14,5 @@ type UserStorageI interface {
 	ListUser(*pb.ListUserReq) (*pb.ListUserResponse, error)
 	CheckField(field, value string) (bool, error)
 	RegisterUser(*pb.CreateUserAuthReqBody) (*pb.CreateUserAuthResBody, error)
+	LoginUser(*pb.LoginRequest) (*pb.LoginResponse,error)
 }

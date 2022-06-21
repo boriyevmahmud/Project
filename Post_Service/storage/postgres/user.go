@@ -122,7 +122,6 @@ func (r *postRepo) GetAllUserPosts(userID string) ([]*pb.Post, error) {
 }
 
 func (r *postRepo) DeleteByIdPost(req *pb.DeleteByIdPostreq) (*pb.Empty, error) {
-
 	_, err := r.db.Exec("delete from posts WHERE user_id=$1", req.PostId)
 	if err != nil {
 		return nil, err

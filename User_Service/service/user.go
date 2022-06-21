@@ -55,7 +55,6 @@ func (s *UserService) CreateUser(ctx context.Context, req *pb.User) (*pb.User, e
 
 func (s *UserService) RegisterUser(ctx context.Context, req *pb.CreateUserAuthReqBody) (*pb.CreateUserAuthResBody, error) {
 	user, err := s.storage.User().RegisterUser(req)
-	fmt.Println(err, "//////////////////////////")
 	if err != nil {
 		s.logger.Error("failed while register user", l.Error(err))
 		return nil, err
@@ -173,4 +172,13 @@ func (s *UserService) CheckField(ctx context.Context, req *pb.CheckFieldRequest)
 	return &pb.CheckFieldResponse{
 		Check: check,
 	}, err
+}
+
+func (s UserService) LoginUser(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse,error){
+	user,err:=s.storage.User().LoginUser(req)
+	if err != nil {
+		s.logger.Error("failed while logging in user ", l.Error(err))
+		return nil, status.Error(codes.Internal, "your password is wrong,please check and retype")
+	}
+	return user,nil
 }

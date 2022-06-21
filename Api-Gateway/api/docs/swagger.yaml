@@ -146,6 +146,27 @@ paths:
       summary: ListUser user
       tags:
       - user
+  /v1/users/login/{email}/{password}:
+    get:
+      consumes:
+      - application/json
+      description: This api using for logging registered user
+      parameters:
+      - description: Email
+        in: path
+        name: email
+        required: true
+        type: string
+      - description: Password
+        in: path
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      tags:
+      - user
   /v1/users/register:
     post:
       consumes:
@@ -203,6 +224,8 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/v1.Emailver'
+      produces:
+      - application/json
       responses: {}
       tags:
       - user

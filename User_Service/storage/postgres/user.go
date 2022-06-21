@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	pb "github.com/mahmud3253/Project/User_Service/genproto"
+	"golang.org/x/crypto/bcrypt"
 
 	"github.com/gofrs/uuid"
 	"github.com/jmoiron/sqlx"
@@ -45,7 +46,7 @@ func (r *userRepo) RegisterUser(user *pb.CreateUserAuthReqBody) (*pb.CreateUserA
 	if err != nil {
 		return nil, err
 	}
-	err = r.db.QueryRow("INSERT INTO user_reg (id,firstname,username,phonenumber,email,password) values($1,$2,$3,$4,$5,$6)RETURNING id,firstname,username,phonenumber,email", id, user.FirstName, user.Username, user.PhoneNumber, user.Email,user.Password).Scan(
+	err = r.db.QueryRow("INSERT INTO user_reg (id,firstname,username,phonenumber,email,password) values($1,$2,$3,$4,$5,$6)RETURNING id,firstname,username,phonenumber,email", id, user.FirstName, user.Username, user.PhoneNumber, user.Email, user.Password).Scan(
 		&rUser.Id,
 		&rUser.FirstName,
 		&rUser.Username,
@@ -159,4 +160,24 @@ func (r *userRepo) CheckField(field, value string) (bool, error) {
 	} else {
 		return true, nil
 	}
+}
+
+func (r *userRepo) LoginUser(req *pb.LoginRequest) (*pb.LoginResponse, error) {
+	var rUser = pb.LoginResponse{}
+
+	err := r.db.QueryRow(`SELECT id,firstname,username,phonenumber,email,password from user_reg WHERE email=$1`, req.Email).Scan(
+		&rUser.Id,
+		&rUser.FirstName,
+		&rUser.Username,
+		&rUser.PhoneNumber,
+		&rUser.Email,
+		&rUser.Password,
+	)
+
+	fmt.Println(err)
+
+	err = bcrypt.CompareHashAndPassword([]byte(rUser.Password), []byte(req.Password))
+	fmt.Println(err)
+
+	return &rUser, err
 }

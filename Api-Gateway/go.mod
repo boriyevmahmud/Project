@@ -12,6 +12,7 @@ require (
 	github.com/swaggo/gin-swagger v1.4.3
 	github.com/swaggo/swag v1.8.1
 	go.uber.org/zap v1.21.0
+	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
 	golang.org/x/net v0.0.0-20220607020251-c690dde0001d // indirect
 	golang.org/x/tools v0.1.10 // indirect
 	google.golang.org/grpc v1.47.0
