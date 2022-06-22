@@ -21,6 +21,8 @@ type Config struct {
 
 	LogLevel string
 	HTTPPort string
+
+	SigninKey string
 }
 
 // Load loads environment vars and inflates Config
@@ -33,6 +35,8 @@ func Load() Config {
 	c.HTTPPort = cast.ToString(getOrReturnDefault("HTTP_PORT", ":8000"))
 	c.UserServiceHost = cast.ToString(getOrReturnDefault("USER_SERVICE_HOST", "127.0.0.1"))
 	c.UserServicePort = cast.ToInt(getOrReturnDefault("USER_SERVICE_PORT", 9000))
+
+	c.SigninKey=cast.ToString(getOrReturnDefault("SIGNIN_KEY","dtbcifgjbzqcuavannwtgrcnvnrwcpbmmuerswaqfthsqzqilkkoozgeoluhgeyinbcafxkgihftieuuyekyhlqibsykxunvhklkdtgeqxetuknhnyyfyvvvjjevxshheigrjhsaexujavqsdnijagfwwucoylku"))
 
 	c.RedisHost = cast.ToString(getOrReturnDefault("REDIS_HOST", "localhost"))
 	c.RedisPort = cast.ToInt(getOrReturnDefault("REDIS_PORT", 6379))

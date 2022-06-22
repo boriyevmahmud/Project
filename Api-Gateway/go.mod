@@ -3,10 +3,12 @@ module github.com/mahmud3253/Project/Api-Gateway
 go 1.13
 
 require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.8.1
 	github.com/goccy/go-json v0.9.7
 	github.com/golang/protobuf v1.5.2
 	github.com/gomodule/redigo v1.8.8
+	github.com/google/uuid v1.1.2
 	github.com/spf13/cast v1.5.0
 	github.com/swaggo/files v0.0.0-20210815190702-a29dd2bc99b2
 	github.com/swaggo/gin-swagger v1.4.3

@@ -13,7 +13,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/goccy/go-json"
+	"github.com/google/uuid"
 	"github.com/gomodule/redigo/redis"
+	"github.com/mahmud3253/Project/Api-Gateway/api/auth"
 	pb "github.com/mahmud3253/Project/Api-Gateway/genproto"
 	l "github.com/mahmud3253/Project/Api-Gateway/pkg/logger"
 	"golang.org/x/crypto/bcrypt"
@@ -36,6 +38,12 @@ type RegisterUserAuthReqBody struct {
 	Email       string `protobuf:"bytes,5,opt,name=Email,proto3" json:"Email"`
 	Code        string `protobuf:"bytes,6,opt,name=Code,proto3" json:"Code"`
 	Password    string `protobuf:"bytes,7,opt,name=Password,proto3" json:"Password"`
+}
+
+type RegisterResponse struct {
+	UserID       string
+	Accesstoken  string
+	Refreshtoken string
 }
 
 type Emailver struct {
@@ -450,6 +458,27 @@ func (h *handlerV1) VerifyUser(c *gin.Context) {
 			return
 		}
 	}
+	id, _ := uuid.NewUUID()
+
+	h.jwtHandler = auth.JwtHandler{
+		Sub:  id.String(),
+		Iss:  "client",
+		Role: "authorized",
+		Log:  h.log,
+	}
+	access, refresh, err := h.jwtHandler.GenerateJWT()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "error while generating jwt",
+		})
+		h.log.Error("your code is wrong", l.Error(err))
+		return
+	}
+	c.JSON(http.StatusOK, &RegisterResponse{
+		UserID:       id.String(),
+		Accesstoken:  access,
+		Refreshtoken: refresh,
+	})
 }
 
 var email string
@@ -484,7 +513,7 @@ func (h *handlerV1) Login(c *gin.Context) {
 		h.log.Error("failed to getting datas", l.Error(err))
 		return
 	}
-	userData.Password=""
+	userData.Password = ""
 	c.JSON(http.StatusOK, userData)
 
 }

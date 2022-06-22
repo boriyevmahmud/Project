@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"github.com/mahmud3253/Project/Api-Gateway/api/auth"
 	"github.com/mahmud3253/Project/Api-Gateway/config"
 	"github.com/mahmud3253/Project/Api-Gateway/pkg/logger"
 	"github.com/mahmud3253/Project/Api-Gateway/services"
@@ -12,6 +13,7 @@ type handlerV1 struct {
 	serviceManager services.IServiceManager
 	cfg            config.Config
 	redisStorage   repo.RedisRepositoryStorage
+	jwtHandler     auth.JwtHandler
 }
 
 // HandlerV1Config ...
@@ -20,6 +22,7 @@ type HandlerV1Config struct {
 	ServiceManager services.IServiceManager
 	Cfg            config.Config
 	Redis          repo.RedisRepositoryStorage
+	jwtHandler     auth.JwtHandler
 }
 
 // New ...
@@ -29,6 +32,6 @@ func New(c *HandlerV1Config) *handlerV1 {
 		serviceManager: c.ServiceManager,
 		cfg:            c.Cfg,
 		redisStorage:   c.Redis,
+		jwtHandler: c.jwtHandler,
 	}
 }
-
