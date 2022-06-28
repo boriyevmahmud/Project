@@ -43,7 +43,7 @@ func (r *userRepo) CreateUser(user *pb.User) (*pb.User, error) {
 func (r *userRepo) RegisterUser(user *pb.CreateUserAuthReqBody) (*pb.CreateUserAuthResBody, error) {
 	var rUser = pb.CreateUserAuthResBody{}
 	id, err := uuid.NewV4()
-	if err != nil {
+	if err != nil {	
 		return nil, err
 	}
 	err = r.db.QueryRow("INSERT INTO user_reg (id,firstname,username,phonenumber,email,password) values($1,$2,$3,$4,$5,$6)RETURNING id,firstname,username,phonenumber,email", id, user.FirstName, user.Username, user.PhoneNumber, user.Email, user.Password).Scan(

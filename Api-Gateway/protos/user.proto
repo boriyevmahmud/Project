@@ -35,6 +35,9 @@ message LoginResponse{
 	string PhoneNumber=4;
 	string Email=5;
     string Password=6;
+    string accessToken=7;
+    string refreshToken=8;
+    string userID=9;
 }
 
 message CreateUserAuthReqBody{

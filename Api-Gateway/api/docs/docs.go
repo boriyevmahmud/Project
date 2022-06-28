@@ -106,6 +106,11 @@ const docTemplate = `{
         },
         "/v1/users/listuser": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "This Api is using for listing users",
                 "consumes": [
                     "application/json"

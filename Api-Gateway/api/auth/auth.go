@@ -33,16 +33,40 @@ func (jwtHandler *JwtHandler) GenerateJWT() (access, refresh string, err error) 
 	claims["iat"] = time.Now().Unix()
 	claims["aud"] = jwtHandler.Aud
 
-	access,err=accessToken.SignedString([]byte(jwtHandler.SigninKey))
-	if err!=nil{
-		jwtHandler.Log.Error("error generating access token",logger.Error(err))
+	access, err = accessToken.SignedString([]byte(jwtHandler.SigninKey))
+	if err != nil {
+		jwtHandler.Log.Error("error generating access token", logger.Error(err))
 		return
 	}
 
-	refresh,err=refreshToken.SignedString([]byte(jwtHandler.SigninKey))
-	if err!=nil{
-		jwtHandler.Log.Error("error generating access token",logger.Error(err))
+	refresh, err = refreshToken.SignedString([]byte(jwtHandler.SigninKey))
+	if err != nil {
+		jwtHandler.Log.Error("error generating access token", logger.Error(err))
 		return
 	}
-	return access,refresh,nil
+	return access, refresh, nil
+}
+
+func (jwtHandler *JwtHandler) ExtractClaims() (jwt.MapClaims, error) {
+	var(
+		token *jwt.Token
+		err error
+	)
+
+	token,err=jwt.Parse(jwtHandler.Token,func(t *jwt.Token)(interface{},error){
+		return []byte(jwtHandler.SigninKey),nil
+	})
+
+	if err!=nil{
+		return nil,err
+	}
+
+	claims,ok:=token.Claims.(jwt.MapClaims)
+	if !(ok && token.Valid){
+		jwtHandler.Log.Error(("Invalid jwt token"))
+		return nil,err
+	}
+
+
+	return claims,nil
 }

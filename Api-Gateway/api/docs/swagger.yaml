@@ -143,6 +143,8 @@ paths:
           description: OK
           schema:
             type: string
+      security:
+      - ApiKeyAuth: []
       summary: ListUser user
       tags:
       - user

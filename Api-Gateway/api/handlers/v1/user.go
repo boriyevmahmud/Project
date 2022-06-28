@@ -13,8 +13,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/goccy/go-json"
-	"github.com/google/uuid"
 	"github.com/gomodule/redigo/redis"
+	"github.com/google/uuid"
 	"github.com/mahmud3253/Project/Api-Gateway/api/auth"
 	pb "github.com/mahmud3253/Project/Api-Gateway/genproto"
 	l "github.com/mahmud3253/Project/Api-Gateway/pkg/logger"
@@ -41,9 +41,15 @@ type RegisterUserAuthReqBody struct {
 }
 
 type RegisterResponse struct {
-	UserID       string
-	Accesstoken  string
-	Refreshtoken string
+	Id                   string   `protobuf:"bytes,1,opt,name=Id,proto3" json:"Id"`
+	FirstName            string   `protobuf:"bytes,2,opt,name=FirstName,proto3" json:"FirstName"`
+	Username             string   `protobuf:"bytes,3,opt,name=Username,proto3" json:"Username"`
+	PhoneNumber          string   `protobuf:"bytes,4,opt,name=PhoneNumber,proto3" json:"PhoneNumber"`
+	Email                string   `protobuf:"bytes,5,opt,name=Email,proto3" json:"Email"`
+	Password             string   `protobuf:"bytes,6,opt,name=Password,proto3" json:"Password"`
+	AccessToken          string   `protobuf:"bytes,7,opt,name=accessToken,proto3" json:"accessToken"`
+	RefreshToken         string   `protobuf:"bytes,8,opt,name=refreshtoken,proto3" json:"refreshToken"`
+	UserID               string   `protobuf:"bytes,9,opt,name=userID,proto3" json:"userID"`
 }
 
 type Emailver struct {
@@ -231,6 +237,7 @@ func (h *handlerV1) UpdateUser(c *gin.Context) {
 
 // ListUser list user
 // @Summary ListUser user
+// @Security ApiKeyAuth
 // @Description This Api is using for listing users
 // @Tags user
 // @Accept json
@@ -242,6 +249,9 @@ func (h *handlerV1) UpdateUser(c *gin.Context) {
 func (h *handlerV1) ListUser(c *gin.Context) {
 	p := c.Query("page")
 	l := c.Query("limit")
+
+	CheckClaims(h, c)
+
 	page, err := strconv.ParseInt(p, 10, 64)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -476,8 +486,8 @@ func (h *handlerV1) VerifyUser(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, &RegisterResponse{
 		UserID:       id.String(),
-		Accesstoken:  access,
-		Refreshtoken: refresh,
+		AccessToken:  access,
+		RefreshToken: refresh,
 	})
 }
 
@@ -514,6 +524,28 @@ func (h *handlerV1) Login(c *gin.Context) {
 		return
 	}
 	userData.Password = ""
+
+	id, _ := uuid.NewUUID()
+
+	h.jwtHandler = auth.JwtHandler{
+		Sub:  id.String(),
+		Iss:  "client",
+		Role: "authorized",
+		Log:  h.log,
+	}
+	access, refresh, err := h.jwtHandler.GenerateJWT()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "error while generating jwt",
+		})
+		h.log.Error("your code is wrong", l.Error(err))
+		return
+	}
+	userData.AccessToken=access
+	userData.RefreshToken=refresh
+	userData.UserID=id.String()
+	
+
 	c.JSON(http.StatusOK, userData)
 
 }
