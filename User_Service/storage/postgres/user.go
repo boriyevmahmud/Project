@@ -43,7 +43,7 @@ func (r *userRepo) CreateUser(user *pb.User) (*pb.User, error) {
 func (r *userRepo) RegisterUser(user *pb.CreateUserAuthReqBody) (*pb.CreateUserAuthResBody, error) {
 	var rUser = pb.CreateUserAuthResBody{}
 	id, err := uuid.NewV4()
-	if err != nil {	
+	if err != nil {
 		return nil, err
 	}
 	err = r.db.QueryRow("INSERT INTO user_reg (id,firstname,username,phonenumber,email,password) values($1,$2,$3,$4,$5,$6)RETURNING id,firstname,username,phonenumber,email", id, user.FirstName, user.Username, user.PhoneNumber, user.Email, user.Password).Scan(
@@ -174,10 +174,31 @@ func (r *userRepo) LoginUser(req *pb.LoginRequest) (*pb.LoginResponse, error) {
 		&rUser.Password,
 	)
 
-	fmt.Println(err)
-
+	if err != nil {
+		return nil, err
+	}
 	err = bcrypt.CompareHashAndPassword([]byte(rUser.Password), []byte(req.Password))
-	fmt.Println(err)
-
+	if err != nil {
+		return nil, err
+	}
 	return &rUser, err
+}
+
+func (r *userRepo) LoginUserAuth(id string) (*pb.LoginResponse, error) {
+	var rUser = pb.LoginResponse{}
+
+
+	err := r.db.QueryRow(`SELECT id,firstname,username,phonenumber,email,password from user_reg WHERE id=$1`, id).Scan(
+		&rUser.Id,
+		&rUser.FirstName,
+		&rUser.Username,
+		&rUser.PhoneNumber,
+		&rUser.Email,
+		&rUser.Password,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return &rUser, nil
+
 }

@@ -169,6 +169,15 @@ paths:
       responses: {}
       tags:
       - user
+  /v1/users/loginbyauth:
+    get:
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuth: []
+      tags:
+      - user
   /v1/users/register:
     post:
       consumes:
@@ -231,4 +240,10 @@ paths:
       responses: {}
       tags:
       - user
+securityDefinitions:
+  BearerAuth:
+    description: GetMyProfile
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

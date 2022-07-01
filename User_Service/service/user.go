@@ -174,11 +174,20 @@ func (s *UserService) CheckField(ctx context.Context, req *pb.CheckFieldRequest)
 	}, err
 }
 
-func (s UserService) LoginUser(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse,error){
-	user,err:=s.storage.User().LoginUser(req)
+func (s UserService) LoginUser(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse, error) {
+	user, err := s.storage.User().LoginUser(req)
 	if err != nil {
 		s.logger.Error("failed while logging in user ", l.Error(err))
 		return nil, status.Error(codes.Internal, "your password is wrong,please check and retype")
 	}
-	return user,nil
+	return user, nil
+}
+
+func (s *UserService) LoginUserAuth(ctx context.Context, req *pb.GetByIdRequest) (*pb.LoginResponse, error) {
+	user, err := s.storage.User().LoginUserAuth(req.UserId)
+	if err != nil {
+		s.logger.Error("failed while logging in user ", l.Error(err))
+		return nil, status.Error(codes.Internal, "your password is wrong,please check and retype")
+	}
+	return user, nil
 }

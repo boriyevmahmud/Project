@@ -41,15 +41,15 @@ type RegisterUserAuthReqBody struct {
 }
 
 type RegisterResponse struct {
-	Id                   string   `protobuf:"bytes,1,opt,name=Id,proto3" json:"Id"`
-	FirstName            string   `protobuf:"bytes,2,opt,name=FirstName,proto3" json:"FirstName"`
-	Username             string   `protobuf:"bytes,3,opt,name=Username,proto3" json:"Username"`
-	PhoneNumber          string   `protobuf:"bytes,4,opt,name=PhoneNumber,proto3" json:"PhoneNumber"`
-	Email                string   `protobuf:"bytes,5,opt,name=Email,proto3" json:"Email"`
-	Password             string   `protobuf:"bytes,6,opt,name=Password,proto3" json:"Password"`
-	AccessToken          string   `protobuf:"bytes,7,opt,name=accessToken,proto3" json:"accessToken"`
-	RefreshToken         string   `protobuf:"bytes,8,opt,name=refreshtoken,proto3" json:"refreshToken"`
-	UserID               string   `protobuf:"bytes,9,opt,name=userID,proto3" json:"userID"`
+	Id           string `protobuf:"bytes,1,opt,name=Id,proto3" json:"Id"`
+	FirstName    string `protobuf:"bytes,2,opt,name=FirstName,proto3" json:"FirstName"`
+	Username     string `protobuf:"bytes,3,opt,name=Username,proto3" json:"Username"`
+	PhoneNumber  string `protobuf:"bytes,4,opt,name=PhoneNumber,proto3" json:"PhoneNumber"`
+	Email        string `protobuf:"bytes,5,opt,name=Email,proto3" json:"Email"`
+	Password     string `protobuf:"bytes,6,opt,name=Password,proto3" json:"Password"`
+	AccessToken  string `protobuf:"bytes,7,opt,name=accessToken,proto3" json:"accessToken"`
+	RefreshToken string `protobuf:"bytes,8,opt,name=refreshtoken,proto3" json:"refreshToken"`
+	//UserID       string `protobuf:"bytes,9,opt,name=userID,proto3" json:"userID"`
 }
 
 type Emailver struct {
@@ -399,8 +399,6 @@ func (h *handlerV1) RegisterUser(c *gin.Context) {
 		h.log.Error("failed to set redis", l.Error(err))
 		return
 	}
-	fmt.Printf("%T", code)
-	fmt.Println(code)
 	SendEmail(body.Email, code)
 
 }
@@ -485,7 +483,6 @@ func (h *handlerV1) VerifyUser(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, &RegisterResponse{
-		UserID:       id.String(),
 		AccessToken:  access,
 		RefreshToken: refresh,
 	})
@@ -508,7 +505,6 @@ func (h *handlerV1) Login(c *gin.Context) {
 	jspbMarshal.UseProtoNames = true
 	email = c.Param("email")
 	password = c.Param("password")
-	fmt.Println(password)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(h.cfg.CtxTimeout))
 	defer cancel()
 
@@ -524,11 +520,9 @@ func (h *handlerV1) Login(c *gin.Context) {
 		return
 	}
 	userData.Password = ""
-
-	id, _ := uuid.NewUUID()
-
+	fmt.Println(userData.Id)
 	h.jwtHandler = auth.JwtHandler{
-		Sub:  id.String(),
+		Sub:  userData.Id,
 		Iss:  "client",
 		Role: "authorized",
 		Log:  h.log,
@@ -541,12 +535,43 @@ func (h *handlerV1) Login(c *gin.Context) {
 		h.log.Error("your code is wrong", l.Error(err))
 		return
 	}
-	userData.AccessToken=access
-	userData.RefreshToken=refresh
-	userData.UserID=id.String()
-	
+	userData.AccessToken = access
+	userData.RefreshToken = refresh
 
 	c.JSON(http.StatusOK, userData)
+}
+
+// LoginByAuth user
+// @Security BearerAuth
+// Description This api using for getting datas by Auth
+// @Tags user
+// @Produce json
+// @Succes 200 {string} []LoginResponse!
+// @Router /v1/users/loginbyauth [get]
+func (h *handlerV1) LoginByAuth(c *gin.Context) {
+	var jspbMarshal protojson.MarshalOptions
+	jspbMarshal.UseProtoNames = true
+
+	claims := CheckClaims(h, c)
+	id := claims["sub"].(string)
+
+	fmt.Println(id)
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*time.Duration(h.cfg.CtxTimeout))
+
+	defer cancel()
+
+	response, err := h.serviceManager.UserService().LoginUserAuth(
+		ctx, &pb.GetByIdRequest{
+			UserId: id,
+		})
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		h.log.Fatal("failed loginbyauth ",l.Error(err))
+	}
+	c.JSON(http.StatusOK, response)
 
 }
 

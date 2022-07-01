@@ -179,6 +179,22 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/v1/users/loginbyauth": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "responses": {}
+            }
+        },
         "/v1/users/register": {
             "post": {
                 "description": "This api is using for registering user",
@@ -366,6 +382,14 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "description": "GetMyProfile",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`

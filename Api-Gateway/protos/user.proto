@@ -13,6 +13,7 @@ service UserService {
     rpc RegisterUser(CreateUserAuthReqBody) returns(CreateUserAuthResBody);
     rpc CheckField(CheckFieldRequest) returns(CheckFieldResponse);
     rpc LoginUser(LoginRequest) returns(LoginResponse);
+    rpc LoginUserAuth(GetByIdRequest) returns(LoginResponse);
 }
 
 message GetByIdRequest {
