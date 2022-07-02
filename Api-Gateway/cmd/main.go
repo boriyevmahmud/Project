@@ -28,7 +28,7 @@ func main() {
 		cfg.PostgressDatabase,
 	)
 
-	db, err := gormadapter.NewAdapter("postgres", psqlString, false)
+	db, err := gormadapter.NewAdapter("postgres", psqlString, true)
 	if err != nil {
 		log.Error("new adapter error", logger.Error(err))
 		return
@@ -39,6 +39,13 @@ func main() {
 		log.Error("new enforcer error", logger.Error(err))
 		return
 	}
+
+	// file casbin
+	// casbinEnforcer, err := casbin.NewEnforcer(cfg.CasbinConfigPath, "./config/policy_defenition.csv")
+	// if err != nil {
+	// 	log.Error("new enforcer error", logger.Error(err))
+	// 	return
+	// }
 
 	err = casbinEnforcer.LoadPolicy()
 	if err != nil {
@@ -59,9 +66,8 @@ func main() {
 	}
 
 	redisRepo := rds.NewRedisRepo(&pool)
-	casbinEnforcer.GetRoleManager().(*defaultrolemanager.RoleManager).AddMatchingFunc("keyMatch",util.KeyMatch)
-	casbinEnforcer.GetRoleManager().(*defaultrolemanager.RoleManager).AddMatchingFunc("keyMatch3",util.KeyMatch3)
-
+	casbinEnforcer.GetRoleManager().(*defaultrolemanager.RoleManager).AddMatchingFunc("keyMatch", util.KeyMatch)
+	casbinEnforcer.GetRoleManager().(*defaultrolemanager.RoleManager).AddMatchingFunc("keyMatch3", util.KeyMatch3)
 
 	serviceManager, err := services.NewServiceManager(&cfg)
 
@@ -70,9 +76,9 @@ func main() {
 	}
 
 	server := api.New(api.Option{
-		Conf:           cfg, 
+		Conf:           cfg,
 		Logger:         log,
-		Casbin: casbinEnforcer,
+		Casbin:         casbinEnforcer,
 		ServiceManager: serviceManager,
 		RedisRepo:      redisRepo,
 	})
