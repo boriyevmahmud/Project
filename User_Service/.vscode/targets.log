@@ -1,6 +1,4 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
-make: *** No rule to make target 'all'.  Stop.
-
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -8,7 +6,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sat Jul  2 09:47:03 2022
+# Make data base, printed on Fri Jul 22 10:07:42 2022
 
 # Variables
 
@@ -28,8 +26,6 @@ XDG_SESSION_CLASS = user
 SNAP_COMMON = /var/snap/code/common
 # environment
 XDG_SESSION_TYPE = x11
-# environment
-VSCODE_LOG_NATIVE = false
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
@@ -47,11 +43,11 @@ CURDIR := /home/mahmud/go/src/github.com/mahmud3253/Project/User_Service
 # makefile
 SHELL = /bin/sh
 # environment
-SNAP_DATA = /var/snap/code/99
+SNAP_DATA = /var/snap/code/102
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # environment
-JOURNAL_STREAM = 8:50026
+JOURNAL_STREAM = 8:51641
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # environment
@@ -69,19 +65,15 @@ USERNAME = mahmud
 # environment
 MAKELEVEL := 0
 # environment
-XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
+MANDATORY_PATH = /usr/share/gconf/ubuntu.mandatory.path
 # environment
-VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
 # environment
 DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 # environment
-VSCODE_VERBOSE_LOGGING = true
+_ = /usr/bin/make
 # environment
-_ = /snap/code/99/usr/share/code/code
-# environment
-MANAGERPID = 1819
-# environment
-LESSOPEN = | /usr/bin/lesspipe %s
+MANAGERPID = 2427
 # environment
 LC_NAME = uz_UZ.UTF-8
 # environment
@@ -89,7 +81,9 @@ VSCODE_CWD = /home/mahmud
 # environment
 GOPROXY = https://proxy.golang.org,direct
 # environment
-GSETTINGS_SCHEMA_DIR = /snap/code/99/usr/share/glib-2.0/schemas
+GOMODCACHE = /home/mahmud/go/pkg/mod
+# environment
+GSETTINGS_SCHEMA_DIR = /snap/code/102/usr/share/glib-2.0/schemas
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
@@ -97,29 +91,31 @@ PATH = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/mahmud:@/tmp/.ICE-unix/2032,unix/mahmud:/tmp/.ICE-unix/2032
+LSCOLORS = Gxfxcxdxbxegedabagacad
+# environment
+SESSION_MANAGER = local/mahmud:@/tmp/.ICE-unix/2642,unix/mahmud:/tmp/.ICE-unix/2642
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
 GDK_PIXBUF_MODULE_FILE = /home/mahmud/snap/code/common/.cache/gdk-pixbuf-loaders.cache
 # environment
-SNAP = /snap/code/99
+LC_ALL = C
+# environment
+SNAP = /snap/code/102
 # environment
 GOPATH = /home/mahmud/go
 # environment
-SNAP_VERSION = 30d9c6cd
+SNAP_VERSION = 3b889b09
 # environment
 XDG_MENU_PREFIX = gnome-
-# environment
-VSCODE_LOG_STACK = false
 # environment
 DISABLE_WAYLAND = 1
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = 6405c11d9b5945c2984728e51b70420b
+INVOCATION_ID = 2f111b8b22804bf0ad9fa17321f20c6a
 # environment
-GDK_PIXBUF_MODULEDIR = /snap/code/99/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
+GDK_PIXBUF_MODULEDIR = /snap/code/102/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -129,13 +125,11 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 2571
+GIO_LAUNCHED_DESKTOP_FILE_PID = 3948
 # automatic
 %F = $(notdir $%)
 # environment
 DISPLAY = :0
-# environment
-VSCODE_PIPE_LOGGING = true
 # environment
 SNAP_INSTANCE_KEY = 
 # environment
@@ -143,21 +137,19 @@ PWD = /home/mahmud/go/src/github.com/mahmud3253/Project/User_Service
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 1995
+SSH_AGENT_PID = 2605
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
 GTK_MODULES = gail:atk-bridge
 # environment
-GOMODCACHE = /home/mahmud/go/pkg/mod
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
 HOME = /home/mahmud
 # environment
-LESSCLOSE = /usr/bin/lesspipe %s %s
-# environment
 VSCODE_CLI = 1
 # environment
-VSCODE_CODE_CACHE_PATH = /home/mahmud/.config/Code/CachedData/30d9c6cd9483b2cc586687151bcbcd635f373630
+VSCODE_CODE_CACHE_PATH = /home/mahmud/.config/Code/CachedData/3b889b090b5ad5793f524b5d1d39fda662b96a2a
 # environment
 LOGNAME = mahmud
 # environment
@@ -169,7 +161,7 @@ SNAP_CONTEXT = Mqi1HaAHpcqOl0IHxRaKIV9-F9EukNHTDVBX9UIbOW3G2fk1xZij
 # automatic
 +F = $(notdir $+)
 # environment
-ELECTRON_NO_ATTACH_CONSOLE = 1
+ZSH = /home/mahmud/.oh-my-zsh
 # environment
 SNAP_USER_COMMON = /home/mahmud/snap/code/common
 # environment
@@ -189,37 +181,39 @@ MAKECMDGOALS := all
 # environment
 QT_IM_MODULE = ibus
 # environment
-SNAP_USER_DATA = /home/mahmud/snap/code/99
+SNAP_USER_DATA = /home/mahmud/snap/code/102
 # environment
 SHLVL = 0
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
-# environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-a4f60a9e-b09f-492e-bc9c-efd3ff32c946.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
 USER = mahmud
 # environment
-SNAP_REVISION = 99
+SNAP_REVISION = 102
 # environment
 LC_MONETARY = uz_UZ.UTF-8
 # makefile
 .DEFAULT_GOAL := build
 # environment
 XDG_CURRENT_DESKTOP = Unity
+# environment
+LESS = -R
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # environment
 LC_TELEPHONE = uz_UZ.UTF-8
 # default
 MAKE_COMMAND := make
+# environment
+OLDPWD = /home/mahmud/go/src/github.com/mahmud3253/Project/User_Service
 # default
 .VARIABLES := 
 # automatic
 *F = $(notdir $*)
 # environment
-VSCODE_IPC_HOOK = /run/user/1000/vscode-08c232b0-1.68.1-main.sock
+VSCODE_IPC_HOOK = /run/user/1000/vscode-08c232b0-1.69.2-main.sock
 # makefile (from 'Makefile', line 1)
 CURRENT_DIR = $(shell pwd)
 # environment
@@ -240,6 +234,8 @@ LC_PAPER = uz_UZ.UTF-8
 LC_IDENTIFICATION = uz_UZ.UTF-8
 # environment
 QT_ACCESSIBILITY = 1
+# environment
+DEFAULTS_PATH = /usr/share/gconf/ubuntu.default.path
 # default
 MAKEFILES := 
 # environment
@@ -253,7 +249,9 @@ LC_MEASUREMENT = uz_UZ.UTF-8
 # environment
 SNAP_NAME = code
 # environment
-LC_ALL = C
+PAGER = less
+# environment
+ELECTRON_NO_ATTACH_CONSOLE = 1
 # environment
 GJS_DEBUG_TOPICS = JS ERROR;JS LOG
 # automatic
@@ -277,10 +275,9 @@ LC_ADDRESS = uz_UZ.UTF-8
 # environment
 LANG = C
 # environment
-VSCODE_PID = 2793
+VSCODE_PID = 4080
 # variable set hash-table stats:
-# Load=133/1024=13%, Rehash=0, Collisions=25/158=16%
- 
+# Load=133/1024=13%, Rehash=0, Collisions=23/158=15%
 
 # Pattern-specific Variable Values
 
@@ -288,9 +285,12 @@ VSCODE_PID = 2793
 
 # Directories
 
-# . (device 2050, inode 1051743): 17 files, no impossibilities.
+# . (device 2050, inode 1051743): 18 files, no impossibilities.
 
-# 17 files, no impossibilities in 1 directories.
+# 18 files, no impossibilities in 1 directories.
+
+ 
+make: *** No rule to make target 'all'.  Stop.
 
 # Implicit Rules
 
@@ -316,7 +316,7 @@ proto-gen:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-08 16:27:02.463494736
+#  Last modified 2022-07-19 23:23:04.477769787
 #  File has been updated.
 #  Successfully updated.
 
@@ -341,12 +341,12 @@ build:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 24 / storage = 181 B / avg = 7 B
-# current buf: size = 8162 B / used = 181 B / count = 24 / avg = 7 B
+# strcache buffers: 1 (0) / strings = 25 / storage = 193 B / avg = 7 B
+# current buf: size = 8162 B / used = 193 B / count = 25 / avg = 7 B
 
-# strcache performance: lookups = 30 / hit rate = 20%
+# strcache performance: lookups = 31 / hit rate = 19%
 # hash-table stats:
-# Load=24/8192=0%, Rehash=0, Collisions=1/30=3%
-# Finished Make data base on Sat Jul  2 09:47:03 2022
+# Load=25/8192=0%, Rehash=0, Collisions=1/31=3%
+# Finished Make data base on Fri Jul 22 10:07:42 2022
 
  

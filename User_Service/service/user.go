@@ -6,6 +6,7 @@ import (
 
 	pb "github.com/mahmud3253/Project/User_Service/genproto"
 	l "github.com/mahmud3253/Project/User_Service/pkg/logger"
+	"github.com/mahmud3253/Project/User_Service/pkg/messagebroker"
 	cl "github.com/mahmud3253/Project/User_Service/service/grpc_client"
 	storage "github.com/mahmud3253/Project/User_Service/storage"
 	"google.golang.org/grpc/codes"
@@ -17,18 +18,35 @@ import (
 
 //UserService ...
 type UserService struct {
-	storage storage.IStorage
-	logger  l.Logger
-	client  cl.GrpcClientI
+	storage   storage.IStorage
+	logger    l.Logger
+	client    cl.GrpcClientI
+	publisher map[string]messagebroker.Publisher
 }
 
 //NewUserService ...
-func NewUserService(db *sqlx.DB, log l.Logger, client cl.GrpcClientI) *UserService {
+func NewUserService(db *sqlx.DB, log l.Logger, client cl.GrpcClientI, publisher map[string]messagebroker.Publisher) *UserService {
 	return &UserService{
-		storage: storage.NewStoragePg(db),
-		logger:  log,
-		client:  client,
+		storage:   storage.NewStoragePg(db),
+		logger:    log,
+		client:    client,
+		publisher: publisher,
 	}
+}
+
+func (s *UserService) publishUserMessage(userData pb.User) error {
+	data, err := userData.Marshal()
+	if err != nil {
+		return err
+	}
+
+	logData := userData.String()
+
+	err = s.publisher["user"].Publish([]byte("user"), data, logData)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *UserService) CreateUser(ctx context.Context, req *pb.User) (*pb.User, error) {
@@ -50,6 +68,16 @@ func (s *UserService) CreateUser(ctx context.Context, req *pb.User) (*pb.User, e
 			user.Posts = append(user.Posts, postss)
 		}
 	}
+
+	err = s.publishUserMessage(*user)
+	fmt.Println(err,"+++++++++++++++++++++++++++++++++++++++++++++")
+	if err != nil {
+		s.logger.Error("failed while publishing info", l.Error(err))
+		return nil, status.Error(codes.Internal, "failed while publishing info")
+	}
+	fmt.Println(err,"+++++++++++++++++++++++++++++++++++++++++++++==========")
+
+
 	return user, nil
 }
 
