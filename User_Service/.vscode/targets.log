@@ -1,4 +1,6 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+make: *** No rule to make target 'all'.  Stop.
+
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -6,7 +8,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Jul 22 10:07:42 2022
+# Make data base, printed on Mon Jul 25 07:16:34 2022
 
 # Variables
 
@@ -22,8 +24,6 @@ DESKTOP_SESSION = ubuntu
 .SHELLFLAGS := -c
 # environment
 XDG_SESSION_CLASS = user
-# environment
-SNAP_COMMON = /var/snap/code/common
 # environment
 XDG_SESSION_TYPE = x11
 # automatic
@@ -43,23 +43,19 @@ CURDIR := /home/mahmud/go/src/github.com/mahmud3253/Project/User_Service
 # makefile
 SHELL = /bin/sh
 # environment
-SNAP_DATA = /var/snap/code/102
-# environment
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # environment
-JOURNAL_STREAM = 8:51641
+_ = /usr/bin/make
+# environment
+JOURNAL_STREAM = 8:47725
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
-# environment
-SNAP_INSTANCE_NAME = code
-# environment
-SNAP_ARCH = amd64
 # makefile (from 'Makefile', line 1)
 MAKEFILE_LIST :=  Makefile
 # automatic
 @F = $(notdir $@)
 # environment
-GIO_LAUNCHED_DESKTOP_FILE = /var/lib/snapd/desktop/applications/code_code.desktop
+GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/code.desktop
 # environment
 USERNAME = mahmud
 # environment
@@ -71,9 +67,7 @@ XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/d
 # environment
 DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 # environment
-_ = /usr/bin/make
-# environment
-MANAGERPID = 2427
+MANAGERPID = 2549
 # environment
 LC_NAME = uz_UZ.UTF-8
 # environment
@@ -82,40 +76,28 @@ VSCODE_CWD = /home/mahmud
 GOPROXY = https://proxy.golang.org,direct
 # environment
 GOMODCACHE = /home/mahmud/go/pkg/mod
-# environment
-GSETTINGS_SCHEMA_DIR = /snap/code/102/usr/share/glib-2.0/schemas
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
-PATH = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/local/go/bin:/home/mahmud/go/bin:/usr/local/go/bin
+PATH = /home/mahmud/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/local/go/bin:/home/mahmud/go/bin:/usr/local/go/bin
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
+GJS_DEBUG_OUTPUT = stderr
+# environment
 LSCOLORS = Gxfxcxdxbxegedabagacad
 # environment
-SESSION_MANAGER = local/mahmud:@/tmp/.ICE-unix/2642,unix/mahmud:/tmp/.ICE-unix/2642
+SESSION_MANAGER = local/mahmud:@/tmp/.ICE-unix/2767,unix/mahmud:/tmp/.ICE-unix/2767
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
-GDK_PIXBUF_MODULE_FILE = /home/mahmud/snap/code/common/.cache/gdk-pixbuf-loaders.cache
-# environment
-LC_ALL = C
-# environment
-SNAP = /snap/code/102
-# environment
 GOPATH = /home/mahmud/go
-# environment
-SNAP_VERSION = 3b889b09
 # environment
 XDG_MENU_PREFIX = gnome-
 # environment
-DISABLE_WAYLAND = 1
-# environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = 2f111b8b22804bf0ad9fa17321f20c6a
-# environment
-GDK_PIXBUF_MODULEDIR = /snap/code/102/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
+INVOCATION_ID = a47f8b51ea4d4fdc89702290daf95f3f
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -125,19 +107,17 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 3948
+GIO_LAUNCHED_DESKTOP_FILE_PID = 3091
 # automatic
 %F = $(notdir $%)
 # environment
 DISPLAY = :0
 # environment
-SNAP_INSTANCE_KEY = 
-# environment
 PWD = /home/mahmud/go/src/github.com/mahmud3253/Project/User_Service
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 2605
+SSH_AGENT_PID = 2730
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -147,23 +127,15 @@ VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
 HOME = /home/mahmud
 # environment
-VSCODE_CLI = 1
-# environment
 VSCODE_CODE_CACHE_PATH = /home/mahmud/.config/Code/CachedData/3b889b090b5ad5793f524b5d1d39fda662b96a2a
 # environment
 LOGNAME = mahmud
 # environment
 APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
-# environment
-SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void
-# environment
-SNAP_CONTEXT = Mqi1HaAHpcqOl0IHxRaKIV9-F9EukNHTDVBX9UIbOW3G2fk1xZij
 # automatic
 +F = $(notdir $+)
 # environment
 ZSH = /home/mahmud/.oh-my-zsh
-# environment
-SNAP_USER_COMMON = /home/mahmud/snap/code/common
 # environment
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # environment
@@ -172,16 +144,12 @@ GNOME_DESKTOP_SESSION_ID = this-is-deprecated
 ^D = $(patsubst %/,%,$(dir $^))
 # environment
 LC_TIME = uz_UZ.UTF-8
-# environment
-SNAP_REAL_HOME = /home/mahmud
 # default
 MAKE = $(MAKE_COMMAND)
 # default
 MAKECMDGOALS := all
 # environment
 QT_IM_MODULE = ibus
-# environment
-SNAP_USER_DATA = /home/mahmud/snap/code/102
 # environment
 SHLVL = 0
 # environment
@@ -190,8 +158,6 @@ GNOME_SHELL_SESSION_MODE = ubuntu
 MAKE_VERSION := 4.2.1
 # environment
 USER = mahmud
-# environment
-SNAP_REVISION = 102
 # environment
 LC_MONETARY = uz_UZ.UTF-8
 # makefile
@@ -216,8 +182,6 @@ OLDPWD = /home/mahmud/go/src/github.com/mahmud3253/Project/User_Service
 VSCODE_IPC_HOOK = /run/user/1000/vscode-08c232b0-1.69.2-main.sock
 # makefile (from 'Makefile', line 1)
 CURRENT_DIR = $(shell pwd)
-# environment
-BAMF_DESKTOP_FILE_HINT = /var/lib/snapd/desktop/applications/code_code.desktop
 # makefile
 MAKEFLAGS = pqrR
 # environment
@@ -231,15 +195,11 @@ GDK_BACKEND = x11
 # environment
 LC_PAPER = uz_UZ.UTF-8
 # environment
-LC_IDENTIFICATION = uz_UZ.UTF-8
-# environment
 QT_ACCESSIBILITY = 1
 # environment
 DEFAULTS_PATH = /usr/share/gconf/ubuntu.default.path
 # default
 MAKEFILES := 
-# environment
-SNAP_COOKIE = Mqi1HaAHpcqOl0IHxRaKIV9-F9EukNHTDVBX9UIbOW3G2fk1xZij
 # environment
 LC_NUMERIC = uz_UZ.UTF-8
 # automatic
@@ -247,11 +207,9 @@ LC_NUMERIC = uz_UZ.UTF-8
 # environment
 LC_MEASUREMENT = uz_UZ.UTF-8
 # environment
-SNAP_NAME = code
-# environment
 PAGER = less
 # environment
-ELECTRON_NO_ATTACH_CONSOLE = 1
+LC_ALL = C
 # environment
 GJS_DEBUG_TOPICS = JS ERROR;JS LOG
 # automatic
@@ -259,15 +217,13 @@ GJS_DEBUG_TOPICS = JS ERROR;JS LOG
 # default
 SUFFIXES := 
 # environment
-SNAP_REEXEC = 
-# environment
 CHROME_DESKTOP = code-url-handler.desktop
 # environment
 WINDOWPATH = 2
 # default
 .INCLUDE_DIRS = /usr/include /usr/local/include /usr/include
 # environment
-GJS_DEBUG_OUTPUT = stderr
+LC_IDENTIFICATION = uz_UZ.UTF-8
 # default
 .RECIPEPREFIX := 
 # environment
@@ -275,9 +231,9 @@ LC_ADDRESS = uz_UZ.UTF-8
 # environment
 LANG = C
 # environment
-VSCODE_PID = 4080
+VSCODE_PID = 3091
 # variable set hash-table stats:
-# Load=133/1024=13%, Rehash=0, Collisions=23/158=15%
+# Load=110/1024=11%, Rehash=0, Collisions=19/135=14%
 
 # Pattern-specific Variable Values
 
@@ -288,9 +244,6 @@ VSCODE_PID = 4080
 # . (device 2050, inode 1051743): 18 files, no impossibilities.
 
 # 18 files, no impossibilities in 1 directories.
-
- 
-make: *** No rule to make target 'all'.  Stop.
 
 # Implicit Rules
 
@@ -328,6 +281,7 @@ build:
 	CGO_ENABLED=0 GOOS=linux go build -mod=vendor -a -installsuffix cgo -o ${CURRENT_DIR}/bin/${APP} ${APP_CMD_DIR}/main.go
 
 # Not a target:
+ 
 .DEFAULT:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -347,6 +301,6 @@ build:
 # strcache performance: lookups = 31 / hit rate = 19%
 # hash-table stats:
 # Load=25/8192=0%, Rehash=0, Collisions=1/31=3%
-# Finished Make data base on Fri Jul 22 10:07:42 2022
+# Finished Make data base on Mon Jul 25 07:16:34 2022
 
  

@@ -18,6 +18,8 @@ type Config struct {
 	RPCPort          string
 	UserServiceHost  string
 	UserServicePort  int
+	KafkaHost        string
+	KafkaPort        int
 }
 
 // Load loads environment vars and inflates Config
@@ -36,6 +38,9 @@ func Load() Config {
 	c.UserServicePort = cast.ToInt(getOrReturnDefault("USER_SERVICE_PORT", 9000))
 	c.UserServiceHost = cast.ToString(getOrReturnDefault("USER_SERVICE_HOST", "localhost"))
 	c.RPCPort = cast.ToString(getOrReturnDefault("RPC_PORT", ":7000"))
+
+	c.KafkaHost = cast.ToString(getOrReturnDefault("KAFKA_HOST", "127.0.0.1"))
+	c.KafkaPort = cast.ToInt(getOrReturnDefault("KAFKA_PORT", 9092))
 
 	return c
 }

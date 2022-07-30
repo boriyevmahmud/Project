@@ -11,6 +11,6 @@ require (
 	github.com/spf13/cast v1.5.0
 	go.uber.org/zap v1.21.0
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
-	google.golang.org/genproto v0.0.0-20220720214146-176da50484ac
+	google.golang.org/genproto v0.0.0-20220720214146-176da50484ac // indirect
 	google.golang.org/grpc v1.47.0
 )
