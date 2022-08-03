@@ -28,24 +28,23 @@ func main() {
 		cfg.PostgressDatabase,
 	)
 
-	db, err := gormadapter.NewAdapter("postgres", psqlString, true)
+	_, err := gormadapter.NewAdapter("postgres", psqlString, true)
 	if err != nil {
 		log.Error("new adapter error", logger.Error(err))
-		return
 	}
 
-	casbinEnforcer, err := casbin.NewEnforcer(cfg.CasbinConfigPath, db)
-	if err != nil {
-		log.Error("new enforcer error", logger.Error(err))
-		return
-	}
-
-	// file casbin
-	// casbinEnforcer, err := casbin.NewEnforcer(cfg.CasbinConfigPath, "./config/policy_defenition.csv")
+	// casbinEnforcer, err := casbin.NewEnforcer(cfg.CasbinConfigPath, )
 	// if err != nil {
 	// 	log.Error("new enforcer error", logger.Error(err))
 	// 	return
 	// }
+
+	//file casbin
+	casbinEnforcer, err := casbin.NewEnforcer(cfg.CasbinConfigPath, "./config/policy_defenition.csv")
+	if err != nil {
+		log.Error("new enforcer error", logger.Error(err))
+		return
+	}
 
 	err = casbinEnforcer.LoadPolicy()
 	if err != nil {
@@ -71,10 +70,8 @@ func main() {
 
 	serviceManager, err := services.NewServiceManager(&cfg)
 
-	if err != nil {
-		log.Error("gRPC dial error", logger.Error(err))
-	}
-
+	
+	
 	server := api.New(api.Option{
 		Conf:           cfg,
 		Logger:         log,
